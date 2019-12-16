@@ -1,2 +1,4 @@
 # asr
-ASR utils, 
+ASR utils,
+
+This scripts work with the assumptions we have a directory 
