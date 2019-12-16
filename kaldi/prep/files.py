@@ -24,7 +24,7 @@ for x in all_dir:
     with open(x) as f:
         text = f.readline()+"\n"
         txt.writelines(get_name(x)+" "+text)
-        txt_all.writelines(text)
+        #txt_all.writelines(text)
 txt.close()
 txt_all.close()
 

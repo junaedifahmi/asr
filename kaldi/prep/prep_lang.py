@@ -8,11 +8,16 @@ import glob
 import sys
 text = []
 
+txtfile = open("alltext",'w')
+
+
 all_dir = glob.glob(sys.argv[1]+"/**/*.txt", recursive=True)
 
 for x in all_dir:    
     with open(x) as f:
-        text.extend(f.readline().split())
+        txt = f.readline()
+        text.extend(x.split())
+        txtfile.writelines(txt+"\n")
 
 
 # In[3]:
