@@ -14,9 +14,9 @@ def get_name(x):
 
 
 import glob
+import sys
 
-
-all_dir = glob.glob("Call/*/*/*.txt")
+all_dir = glob.glob(sys.argv[1]+"/**/*.txt",recursive=True)
 
 txt = open('text','w')
 for x in all_dir:    
@@ -28,7 +28,7 @@ txt.close()
 # In[59]:
 
 
-get_name(all_dir[-1])
+#get_name(all_dir[-1])
 
 
 # # Make SCP
@@ -36,7 +36,7 @@ get_name(all_dir[-1])
 # In[36]:
 
 
-all_wav = glob.glob("Call/*/*/*.wav")
+all_wav = glob.glob(sys.argv[1]+"/**/*.wav", recursive=True)
 
 wav = open('wav.scp','w')
 

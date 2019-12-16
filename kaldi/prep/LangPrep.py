@@ -5,9 +5,10 @@
 
 
 import glob
+import sys
 text = []
 
-all_dir = glob.glob("Call/*/*/*.txt")
+all_dir = glob.glob(sys.argv[1]"/**/*.txt", recursive=True)
 
 for x in all_dir:    
     with open(x) as f:
@@ -23,13 +24,13 @@ settext = set(text)
 # In[4]:
 
 
-len(text)
+print(len(text))
 
 
 # In[5]:
 
 
-len(settext)
+print(len(settext))
 
 
 # In[127]:
@@ -100,10 +101,3 @@ for c in phone:
     phonef.write(c+'\n')
     
 phonef.close()
-
-
-# In[ ]:
-
-
-
-
