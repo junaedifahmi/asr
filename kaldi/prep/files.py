@@ -22,7 +22,7 @@ txt = open('text','w')
 txt_all = open('text_all', 'w')
 for x in all_dir:    
     with open(x) as f:
-        text = f.realine()+"\n"
+        text = f.readline()+"\n"
         txt.writelines(get_name(x)+" "+text)
         txt_all.writelines(text)
 txt.close()
