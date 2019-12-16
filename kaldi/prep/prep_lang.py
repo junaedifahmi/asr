@@ -8,7 +8,7 @@ import glob
 import sys
 text = []
 
-all_dir = glob.glob(sys.argv[1]"/**/*.txt", recursive=True)
+all_dir = glob.glob(sys.argv[1]+"/**/*.txt", recursive=True)
 
 for x in all_dir:    
     with open(x) as f:
