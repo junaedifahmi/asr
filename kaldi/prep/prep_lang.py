@@ -8,7 +8,9 @@ import glob
 import sys
 text = []
 
-txtfile = open("alltext",'w')
+
+to = sys.argv[2]+'/'
+txtfile = open(to+"./lm/alltext",'w')
 
 
 all_dir = glob.glob(sys.argv[1]+"/**/*.txt", recursive=True)
@@ -16,7 +18,7 @@ all_dir = glob.glob(sys.argv[1]+"/**/*.txt", recursive=True)
 for x in all_dir:    
     with open(x) as f:
         txt = f.readline()
-        text.extend(x.split())
+        text.extend(txt.split())
         txtfile.writelines(txt+"\n")
 
 
@@ -75,8 +77,8 @@ def lexiconize(kata):
 import re
 ex = r"(<|\[)\w*(>|\])"
 
-silence_phone = open('silence_phone.txt','w')
-lexicon = open('lexicon.txt', 'w')
+silence_phone = open(to+'./dict/silence_phone.txt','w')
+lexicon = open(to+'./dict/lexicon.txt', 'w')
 
 for x in settext:
     if re.match(ex, x):
@@ -93,7 +95,7 @@ lexicon.close()
 
 
 phone= []
-with open('lexicon.txt','r') as f:
+with open(to+'./dict/lexicon.txt','r') as f:
     for x in f:
         y = x.split()
         y.pop(0)
@@ -101,8 +103,12 @@ with open('lexicon.txt','r') as f:
 
 phone = set(phone)
 
-phonef = open('nonsilence_phones.txt','w')
+phonef = open(to+'./dict/nonsilence_phones.txt','w')
 for c in phone:
     phonef.write(c+'\n')
     
 phonef.close()
+
+with open(to+"./dict/optional_phones.txt", "w") as f:
+    pass
+

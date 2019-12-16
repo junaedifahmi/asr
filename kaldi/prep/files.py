@@ -15,18 +15,21 @@ def get_name(x):
 
 import glob
 import sys
+import os
+
 
 all_dir = glob.glob(sys.argv[1]+"/**/*.txt",recursive=True)
+to = sys.argv[2] + '/'
 
-txt = open('text','w')
-txt_all = open('text_all', 'w')
+os.makedirs(to, exist_ok=True)
+
+
+txt = open(to+'text','w')
 for x in all_dir:    
     with open(x) as f:
         text = f.readline()+"\n"
         txt.writelines(get_name(x)+" "+text)
-        #txt_all.writelines(text)
 txt.close()
-txt_all.close()
 
 # In[59]:
 
@@ -41,7 +44,7 @@ txt_all.close()
 
 all_wav = glob.glob(sys.argv[1]+"/**/*.wav", recursive=True)
 
-wav = open('wav.scp','w')
+wav = open(to+'wav.scp','w')
 
 for x in all_wav:
     wav.writelines( get_name(x)+" "+x+"\n")
@@ -53,7 +56,7 @@ wav.close()
 # In[43]:
 
 
-utt = open('utt2spk','w')
+utt = open(to+'utt2spk','w')
 
 for x in all_wav:
     utt.writelines(get_name(x)+" "+get_name(x)+"\n")
