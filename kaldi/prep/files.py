@@ -19,11 +19,13 @@ import sys
 all_dir = glob.glob(sys.argv[1]+"/**/*.txt",recursive=True)
 
 txt = open('text','w')
+txt_all = open('text_all', 'w')
 for x in all_dir:    
     with open(x) as f:
         txt.writelines(get_name(x)+" "+f.readline()+"\n")
+        txt_all.writelines(f.readline()+"\n")
 txt.close()
-
+txt_all.close()
 
 # In[59]:
 
