@@ -18,6 +18,10 @@ import sys
 import os
 
 
+if len(sys.argv) < 3 :
+    print("Kurang argument")
+    sys.exit()
+
 all_dir = glob.glob(sys.argv[1]+"/**/*.txt",recursive=True)
 to = sys.argv[2] + '/'
 

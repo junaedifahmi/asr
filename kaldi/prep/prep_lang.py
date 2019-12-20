@@ -77,7 +77,7 @@ def lexiconize(kata):
 import re
 ex = r"(<|\[)\w*(>|\])"
 
-silence_phone = open(to+'./dict/silence_phone.txt','w')
+silence_phone = open(to+'./dict/silence_phones.txt','w')
 lexicon = open(to+'./dict/lexicon.txt', 'w')
 
 for x in settext:
