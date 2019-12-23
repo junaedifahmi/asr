@@ -59,15 +59,42 @@ def writefile(filename,datas):
             f.write("\t")
             f.write(gettext(data))
             f.write("\n")
-def cacah(text):
-    txt = ""
-    for c in text:
-        if c not in list('abcdefghijklmnopqrstuvwxyz'):
-            txt+='| '
-        else:
-            txt+=c+' '
+def cacah(kata):
+    # txt = ""
+    # for c in text:
+    #     if c not in list('abcdefghijklmnopqrstuvwxyz'):
+    #         txt+='| '
+    #     else:
+    #         txt+=c+' '
             
-    return txt+'|'
+    # return txt+'|'
+    x = [c for c in kata]
+    for i in range(len(x)):
+        try: 
+            y = x[i+1]
+        
+            if x[i] == 'n' and y == 'y':
+                x[i] = 'ny'
+                x[i+1] = '#'
+            elif x[i] == 'n' and y == 'g':
+                x[i] = 'ng'
+                x[i+1] = '#'
+            elif x[i] == 's' and y == 'y':
+                x[i] = 'sy'
+                x[i+1] = '#'
+            elif x[i] == 'k' and y == 'h':
+                x[i] = 'kh'
+                x[i+1] = '#'
+            elif x[i] == 't' and y == 'h':
+                x[i] = 'th'
+                x[i+1] = '#'
+            elif x[i] not in list('abcdefghijklmnopqrstuvwxyz') and x[i] != '#' :
+                x[i] = '|'
+        except:
+            pass
+    x = [c for c in x if c != '#']
+    
+    return ' '.join(x)+" |"
             
 
 
@@ -107,15 +134,16 @@ tokens = set()
 
 with open( (to+"/txt/lexicon.txt"), 'w' ) as f:
     for l in lexicon:
-        tokens |= set(cacah(l))
-        print(l,cacah(l))
-        f.writelines(l+" "+cacah(l)+"\n")
+        ch = cacah(l)
+        tokens |= set(ch)
+        print(l,ch)
+        f.writelines(l+" "+ch+"\n")
         
 tokens.remove(' ')
 with open ( (to+"/txt/tokens.txt")  , 'w' ) as f:
+    tokens.add("|")
     for c in tokens:
         f.writelines(c+"\n")
-    f.writelines("|")
 
 
 elapsed_time = time.time() - start_time
