@@ -60,14 +60,6 @@ def writefile(filename,datas):
             f.write(gettext(data))
             f.write("\n")
 def cacah(kata):
-    # txt = ""
-    # for c in text:
-    #     if c not in list('abcdefghijklmnopqrstuvwxyz'):
-    #         txt+='| '
-    #     else:
-    #         txt+=c+' '
-            
-    # return txt+'|'
     x = [c for c in kata]
     for i in range(len(x)):
         try: 
@@ -94,7 +86,7 @@ def cacah(kata):
             pass
     x = [c for c in x if c != '#']
     
-    return ' '.join(x)+" |"
+    return x
             
 
 
@@ -132,14 +124,18 @@ lexicon = set(lexicon)
 
 tokens = set()
 
+
+# Write Lexicon file "<word> <spelling>" format
 with open( (to+"/txt/lexicon.txt"), 'w' ) as f:
     for l in lexicon:
         ch = cacah(l)
         tokens |= set(ch)
         print(l,ch)
-        f.writelines(l+" "+ch+"\n")
+        f.writelines(l+" "+' '.join(ch)+"\n")
         
 tokens.remove(' ')
+
+# Write tokens list
 with open ( (to+"/txt/tokens.txt")  , 'w' ) as f:
     tokens.add("|")
     for c in tokens:
