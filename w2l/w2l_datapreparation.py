@@ -130,10 +130,14 @@ with open( (to+"/txt/lexicon.txt"), 'w' ) as f:
     for l in lexicon:
         ch = cacah(l)
         tokens |= set(ch)
-        print(l,ch)
+        print(l,' '.join(ch))
         f.writelines(l+" "+' '.join(ch)+"\n")
         
-tokens.remove(' ')
+
+try:
+    tokens.remove(' ')
+except:
+    pass
 
 # Write tokens list
 with open ( (to+"/txt/tokens.txt")  , 'w' ) as f:
