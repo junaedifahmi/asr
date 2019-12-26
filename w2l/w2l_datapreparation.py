@@ -30,16 +30,17 @@ split = int(args.split)
 os.makedirs(to, exist_ok=True)
 logging.basicConfig(filename=args.log, filemode='w',
                     format='[%(asctime)s] [%(levelname)s] [%(massage)s]')
-
+logger = logging.getLogger()
 #os.makedirs(to, exist_ok=True)
 
-files = glob.glob(path+"/**/*.wav", recursive=True)
-logging.info("Terdapat %i wav files ditemukan dari folder %s",
-             len(files), path)
+files = glob.glob(path + "/**/*.wav", recursive=True)
+logger.info("Terdapat %i wav files ditemukan dari folder %s",
+            len(files), path)
 
 
 for file in files:
     if not os.path.isfile(file.replace('txt', 'wav')):
+        logger.info("%s tidak memiliki txt file, dihapus", file)
         files.remove(file)
 
 # In[70]:
@@ -113,8 +114,9 @@ if int(split) > 0:
     writefile(to+'/lists/train.lst', train)
     writefile(to+'/lists/test.lst', test)
 else:
-    writefile(to+'/lists/train.lst', files)
+    writefile(to + '/lists/train.lst', files)
 
+logger.info("Telah dibuat file list di %s", to+'/lists/')
 
 # In[102]:
 os.makedirs(to+'/txt/', exist_ok=True)
@@ -126,7 +128,7 @@ for f in files:
     lexicon.extend(gettext(f).split())
     text.writelines(gettext(f)+'\n')
 text.close()
-
+logger.info("Telah dibuat file text di %s", text)
 
 # In[110]:
 
@@ -143,7 +145,7 @@ with open((to+"/txt/lexicon.txt"), 'w') as f:
         print(l, ' '.join(ch))
         f.writelines(l+" "+' '.join(ch)+"\n")
 
-
+logger.info("Telah dibuat file lexicon di %s", to+"/txt/lexicon.txt")
 try:
     tokens.remove(' ')
 except:
@@ -157,4 +159,4 @@ with open((to+"/txt/tokens.txt"), 'w') as f:
 
 
 elapsed_time = time.time() - start_time
-logging.info("Proses selesai dengan waktu", elapsed_time/60, "menit")
+logger.info("Proses selesai dengan waktu %s menit", elapsed_time/60)
