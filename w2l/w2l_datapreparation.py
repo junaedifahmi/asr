@@ -28,7 +28,7 @@ path = args.src
 to = args.to + '/'
 split = int(args.split)
 os.makedirs(to, exist_ok=True)
-logging.basicConfig(filename=args.log, filemode='w',
+logging.basicConfig(filename=args.log, filemode='a',
                     format='[%(asctime)s] [%(levelname)s] [%(massage)s]')
 logger = logging.getLogger()
 #os.makedirs(to, exist_ok=True)
