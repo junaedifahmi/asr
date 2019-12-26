@@ -57,7 +57,7 @@ def gettext(filename):
     filename = filename.replace('wav', 'txt')
     with open(filename, 'r') as f:
         txt = f.readline()
-    txt = re.sub(r'\[\w+\]', '', txt)
+    txt = re.sub(r'(\[\w+\]|<\w+>)', '', txt)
     return txt.replace('\n', '')
 
 
