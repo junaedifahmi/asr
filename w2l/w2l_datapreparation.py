@@ -39,7 +39,7 @@ logger.info("Terdapat %i wav files ditemukan dari folder %s",
 
 
 for file in files:
-    if not os.path.isfile(file.replace('txt', 'wav')):
+    if not os.path.isfile(file.replace('wav', 'txt')):
         logger.info("%s tidak memiliki txt file, dihapus", file)
         files.remove(file)
 
