@@ -4,6 +4,7 @@
 # In[76]:
 
 
+import re
 import glob
 import sys
 import os
@@ -12,6 +13,8 @@ import sox
 import logging
 import argparse
 import time
+import re
+
 
 start_time = time.time()
 
@@ -21,7 +24,7 @@ parser.add_argument("--to", help="Folder data untuk hasil")
 parser.add_argument(
     "--split", help="Split ke train dan test dalam persen", default=30)
 parser.add_argument("--log", help="Simpan dimana lognya",
-                    default='./logdatapreparation')
+                    default='./log_datapreparation')
 args = parser.parse_args()
 
 path = args.src
@@ -54,6 +57,7 @@ def gettext(filename):
     filename = filename.replace('wav', 'txt')
     with open(filename, 'r') as f:
         txt = f.readline()
+    txt = re.sub(r'\[\w+\]', '', txt)
     return txt.replace('\n', '')
 
 
@@ -156,7 +160,7 @@ with open((to+"/txt/tokens.txt"), 'w') as f:
     tokens.add("|")
     for c in tokens:
         f.writelines(c+"\n")
-
+logger.info("Token dibuat di %s", to+"/txt/tokens.txt")
 
 elapsed_time = time.time() - start_time
 logger.info("Proses selesai dengan waktu %s menit", elapsed_time/60)
