@@ -46,9 +46,10 @@ for path in paths:
 
 
 for file in files:
-    if not os.path.isfile(file.replace('wav', 'txt')):
-        logger.info("%s tidak memiliki txt file, dihapus", file)
+    if not os.path.exists(file.replace('wav', 'txt')):
         files.remove(file)
+        logger.info("%s tidak memiliki txt file, dihapus", file)
+
 
 # In[70]:
 
