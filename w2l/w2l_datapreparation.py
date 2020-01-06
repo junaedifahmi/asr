@@ -45,9 +45,11 @@ for path in paths:
                 len(files), path)
 
 print(len(files))
+files_filtered = []
+files_filtered = files
 for file in files:
     if not os.path.exists(file.replace('wav', 'txt')):
-        files.remove(file)
+        files_filtered.remove(file)
         logger.info("%s tidak memiliki txt file, dihapus", file)
 print(len(files))
 
@@ -117,8 +119,8 @@ def cacah(kata):
 
 os.makedirs(to+'/lists/', exist_ok=True)
 if int(split) > 0:
-    k = int(split/100*len(files))
-    test = random.sample(files, k)
+    k = int(split/100*len(files_filtered))
+    test = random.sample(files_filtered, k)
     train = [f for f in files if f not in test]
     writefile(to+'/lists/train.lst', train)
     writefile(to+'/lists/test.lst', test)
