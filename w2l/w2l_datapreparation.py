@@ -44,12 +44,12 @@ for path in paths:
     logger.info("Terdapat %i wav files ditemukan dari folder %s",
                 len(files), path)
 
-
+print(len(files))
 for file in files:
     if not os.path.exists(file.replace('wav', 'txt')):
         files.remove(file)
         logger.info("%s tidak memiliki txt file, dihapus", file)
-
+print(len(files))
 
 # In[70]:
 
