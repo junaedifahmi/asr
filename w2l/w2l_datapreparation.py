@@ -50,7 +50,7 @@ for file in files:
     if os.path.exists(file.replace('wav', 'txt')):
         files_filtered.append(file)
         logger.info("%s tidak memiliki txt file, dihapus", file)
-print(len(files))
+print(len(files_filtered))
 
 # In[70]:
 
