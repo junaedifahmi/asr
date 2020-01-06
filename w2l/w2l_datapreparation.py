@@ -120,6 +120,7 @@ os.makedirs(to+'/lists/', exist_ok=True)
 if int(split) > 0:
     k = int(split/100*len(files_filtered))
     test = random.sample(files_filtered, k)
+    print(len(test))
     train = [f for f in files_filtered if f not in test]
     writefile(to+'/lists/train.lst', train)
     writefile(to+'/lists/test.lst', test)
@@ -134,7 +135,7 @@ os.makedirs(to+'/txt/', exist_ok=True)
 text = open(to+'/txt/text.txt', 'w')
 
 lexicon = []
-for f in files:
+for f in files_filtered:
     lexicon.extend(gettext(f).split())
     text.writelines(gettext(f)+'\n')
 text.close()
