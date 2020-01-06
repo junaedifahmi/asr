@@ -120,7 +120,7 @@ os.makedirs(to+'/lists/', exist_ok=True)
 if int(split) > 0:
     k = int(split/100*len(files_filtered))
     test = random.sample(files_filtered, k)
-    train = [f for f in files if f not in test]
+    train = [f for f in files_filtered if f not in test]
     writefile(to+'/lists/train.lst', train)
     writefile(to+'/lists/test.lst', test)
 else:
