@@ -19,7 +19,7 @@ import re
 start_time = time.time()
 
 parser = argparse.ArgumentParser(description="Dataset Creation for w2l")
-parser.add_argument("--src", help="Folder data akustik dan text")
+parser.add_argument("--src", help="Folder data akustik dan text", nargs='+')
 parser.add_argument("--to", help="Folder data untuk hasil")
 parser.add_argument(
     "--split", help="Split ke train dan test dalam persen", default=30)
@@ -27,7 +27,7 @@ parser.add_argument("--log", help="Simpan dimana lognya",
                     default='./log_datapreparation')
 args = parser.parse_args()
 
-path = args.src
+paths = args.src
 to = args.to + '/'
 split = int(args.split)
 os.makedirs(to, exist_ok=True)
@@ -36,9 +36,13 @@ logging.basicConfig(filename=args.log,
 logger = logging.getLogger()
 #os.makedirs(to, exist_ok=True)
 
-files = glob.glob(path + "/**/*.wav", recursive=True)
-logger.info("Terdapat %i wav files ditemukan dari folder %s",
-            len(files), path)
+
+print(paths)
+files = []
+for path in paths:
+    files.extend(glob.glob(path + "/**/*.wav", recursive=True))
+    logger.info("Terdapat %i wav files ditemukan dari folder %s",
+                len(files), path)
 
 
 for file in files:
