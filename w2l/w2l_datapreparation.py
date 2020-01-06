@@ -46,10 +46,9 @@ for path in paths:
 
 print(len(files))
 files_filtered = []
-files_filtered = files
 for file in files:
-    if not os.path.exists(file.replace('wav', 'txt')):
-        files_filtered.remove(file)
+    if os.path.exists(file.replace('wav', 'txt')):
+        files_filtered.append(file)
         logger.info("%s tidak memiliki txt file, dihapus", file)
 print(len(files))
 
