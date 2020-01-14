@@ -144,7 +144,6 @@ logger.info("Telah dibuat file text di %s", text)
 # In[110]:
 
 lexicon = set(lexicon)
-c
 tokens = set()
 
 
