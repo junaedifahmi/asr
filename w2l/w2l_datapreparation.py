@@ -44,13 +44,13 @@ for path in paths:
     logger.info("Terdapat %i wav files ditemukan dari folder %s",
                 len(files), path)
 
-print(len(files))
+print("GOT [", len(files), "] wav files")
 files_filtered = []
 for file in files:
     if os.path.exists(file.replace('wav', 'txt')):
         files_filtered.append(file)
         logger.info("%s tidak memiliki txt file, dihapus", file)
-print(len(files_filtered))
+print("GOT [", len(files_filtered), "] wav with txt files")
 
 # In[70]:
 
@@ -78,7 +78,7 @@ def writefile(filename, datas):
             f.write("\t")
             f.write(getabs(data))
             f.write("\t")
-            f.write(str(sox.file_info.duration(data)))
+            f.write(str(sox.file_info.duration(data)*1000))
             f.write("\t")
             f.write(gettext(data))
             f.write("\n")
@@ -143,7 +143,7 @@ logger.info("Telah dibuat file text di %s", text)
 
 # In[110]:
 
-lexicon = set(lexicon)
+lexicon = sorted(set(lexicon))
 tokens = set()
 
 
@@ -164,6 +164,7 @@ except:
 # Write tokens list
 with open((to+"/txt/tokens.txt"), 'w') as f:
     tokens.add("|")
+    tokens = sorted(tokens)
     for c in tokens:
         f.writelines(c+"\n")
 logger.info("Token dibuat di %s", to+"/txt/tokens.txt")
