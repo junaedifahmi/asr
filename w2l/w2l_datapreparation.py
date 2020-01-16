@@ -153,7 +153,7 @@ with open((to+"/txt/lexicon.txt"), 'w') as f:
         ch = cacah(l)
         tokens |= set(ch)
         print(l, ' '.join(ch))
-        f.writelines(l+" "+' '.join(ch)+"\n")
+        f.writelines(l+"\t"+' '.join(ch)+"\n")
 
 logger.info("Telah dibuat file lexicon di %s", to+"/txt/lexicon.txt")
 try:
