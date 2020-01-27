@@ -68,10 +68,13 @@ hasil = open(to+"clean",'w')
 for path in paths:
     with open(path,'r') as f:
         for line in f:
-            line = to_lower(line)
-            line = num2txt(line)
-            line = punc(line)
-            hasil.write(line)
+            try:
+                line = to_lower(line)
+                line = num2txt(line)
+                line = punc(line)
+                hasil.write(line)
+            except:
+                pass
             
 hasil.close()
 
