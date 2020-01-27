@@ -64,6 +64,7 @@ def gettext(filename):
     with open(filename, 'r') as f:
         txt = f.readline()
     txt = re.sub(r'(\[\w+\]|<\w+>)', '', txt)
+    txt = re.sub(r'-','|', txt)
     return txt.replace('\n', '')
 
 
@@ -122,10 +123,10 @@ if int(split) > 0:
     test = random.sample(files_filtered, k)
     print(len(test))
     train = [f for f in files_filtered if f not in test]
-    writefile(to+'/lists/train.lst', train)
-    writefile(to+'/lists/test.lst', test)
+    writefile(to+'/lists/train', train)
+    writefile(to+'/lists/test', test)
 else:
-    writefile(to + '/lists/train.lst', files)
+    writefile(to + '/lists/train', files)
 
 logger.info("Telah dibuat file list di %s", to+'/lists/')
 
@@ -148,21 +149,21 @@ tokens = set()
 
 
 # Write Lexicon file "<word> <spelling>" format
-with open((to+"/txt/lexicon.txt"), 'w') as f:
+with open((to+"/txt/lexicon"), 'w') as f:
     for l in lexicon:
         ch = cacah(l)
         tokens |= set(ch)
         print(l, ' '.join(ch))
         f.writelines(l+"\t"+' '.join(ch)+"\n")
 
-logger.info("Telah dibuat file lexicon di %s", to+"/txt/lexicon.txt")
+logger.info("Telah dibuat file lexicon di %s", to+"/txt/lexicon")
 try:
     tokens.remove(' ')
 except:
     pass
 
 # Write tokens list
-with open((to+"/txt/tokens.txt"), 'w') as f:
+with open((to+"/txt/tokens"), 'w') as f:
     tokens.add("|")
     tokens = sorted(tokens)
     for c in tokens:
