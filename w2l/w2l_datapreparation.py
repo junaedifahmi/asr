@@ -31,26 +31,30 @@ paths = args.src
 to = args.to + '/'
 split = int(args.split)
 os.makedirs(to, exist_ok=True)
-logging.basicConfig(filename=args.log,
-                    format='[%(asctime)s] [%(levelname)s] [%(massage)s]')
-logger = logging.getLogger()
-#os.makedirs(to, exist_ok=True)
 
 
-print(paths)
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler(to+"info.log"),
+        logging.StreamHandler()
+    ]
+)
+
+logging.info("Data diambil dari %s", paths)
 files = []
 for path in paths:
     files.extend(glob.glob(path + "/**/*.wav", recursive=True))
-    logger.info("Terdapat %i wav files ditemukan dari folder %s",
-                len(files), path)
+    logging.info("Terdapat %i wav files ditemukan dari folder %s",
+                 len(files), path)
 
-print("GOT [", len(files), "] wav files")
 files_filtered = []
 for file in files:
     if os.path.exists(file.replace('wav', 'txt')):
         files_filtered.append(file)
-        logger.info("%s tidak memiliki txt file, dihapus", file)
-print("GOT [", len(files_filtered), "] wav with txt files")
+    else:
+        logging.info("%s tidak memiliki txt file, dihapus", file)
 
 # In[70]:
 
@@ -64,12 +68,15 @@ def gettext(filename):
     with open(filename, 'r') as f:
         txt = f.readline()
     txt = re.sub(r'(\[\w+\]|<\w+>)', '', txt)
-    txt = re.sub(r'-','|', txt)
+    txt = re.sub(r'-', '|', txt)
     return txt.replace('\n', '')
 
 
 def getabs(filename):
     return os.path.abspath(filename)
+
+
+totaldur = []
 
 
 def writefile(filename, datas):
@@ -79,7 +86,9 @@ def writefile(filename, datas):
             f.write("\t")
             f.write(getabs(data))
             f.write("\t")
-            f.write(str(sox.file_info.duration(data)*1000))
+            dur = sox.file_info.duration(data) * 1000
+            totaldur.append(dur)
+            f.write(str(dur))
             f.write("\t")
             f.write(gettext(data))
             f.write("\n")
@@ -121,14 +130,18 @@ os.makedirs(to+'/lists/', exist_ok=True)
 if int(split) > 0:
     k = int(split/100*len(files_filtered))
     test = random.sample(files_filtered, k)
-    print(len(test))
     train = [f for f in files_filtered if f not in test]
-    writefile(to+'/lists/train', train)
-    writefile(to+'/lists/test', test)
+    totaldur = []
+    writefile(to + '/lists/train', train)
+    logging.info("Total data latih %.2f jam", sum(totaldur)/1000/60/60)
+    totaldur = []
+    writefile(to + '/lists/test', test)
+    logging.info("Total data uji %.2f jam", sum(totaldur)/1000/60/60)
 else:
     writefile(to + '/lists/train', files)
+    logging.info("Total data latih %.2f jam", sum(totaldur)/1000/60/60)
 
-logger.info("Telah dibuat file list di %s", to+'/lists/')
+logging.info("Telah dibuat file list di %s", to+'/lists/')
 
 # In[102]:
 os.makedirs(to+'/txt/', exist_ok=True)
@@ -140,7 +153,7 @@ for f in files_filtered:
     lexicon.extend(gettext(f).split())
     text.writelines(gettext(f)+'\n')
 text.close()
-logger.info("Telah dibuat file text di %s", text)
+logging.info("Telah dibuat file text di %s", to+'/txt/text.txt')
 
 # In[110]:
 
@@ -153,10 +166,10 @@ with open((to+"/txt/lexicon"), 'w') as f:
     for l in lexicon:
         ch = cacah(l)
         tokens |= set(ch)
-        print(l, ' '.join(ch))
-        f.writelines(l+"\t"+' '.join(ch)+"\n")
+        f.writelines(l+"\t"+' '.join(ch)+" |\n")
 
-logger.info("Telah dibuat file lexicon di %s", to+"/txt/lexicon")
+logging.info("Telah dibuat file lexicon di %s", to + "/txt/lexicon")
+logging.info("Terdapat %d lexicon unik", len(lexicon))
 try:
     tokens.remove(' ')
 except:
@@ -168,7 +181,7 @@ with open((to+"/txt/tokens"), 'w') as f:
     tokens = sorted(tokens)
     for c in tokens:
         f.writelines(c+"\n")
-logger.info("Token dibuat di %s", to+"/txt/tokens.txt")
+logging.info("Token dibuat di %s", to+"/txt/tokens.txt")
 
 elapsed_time = time.time() - start_time
-logger.info("Proses selesai dengan waktu %s menit", elapsed_time/60)
+logging.info("Proses selesai dengan waktu %.2f menit", elapsed_time/60)
