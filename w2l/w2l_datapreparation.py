@@ -67,10 +67,11 @@ def getname(filename):
 
 
 def gettext(filename):
-    try:
+    if os.path.exists(filename.replace('wav', 'txt')):
         filename = filename.replace('wav', 'txt')
-    except:
+    else:
         filename = filename.replace('wav', 'lab')
+
     with open(filename, 'r') as f:
         txt = f.readline()
     txt = re.sub(r'(\[\w+\]|<\w+>)', '', txt)
@@ -187,7 +188,7 @@ with open((to+"/txt/tokens"), 'w') as f:
     tokens = sorted(tokens)
     for c in tokens:
         f.writelines(c+"\n")
-logging.info("Token dibuat di %s", to+"/txt/tokens.txt")
+logging.info("Token dibuat di %s", to+"/txt/tokens")
 
 elapsed_time = time.time() - start_time
 logging.info("Proses selesai dengan waktu %.2f menit", elapsed_time/60)
