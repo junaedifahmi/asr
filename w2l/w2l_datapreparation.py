@@ -24,11 +24,12 @@ parser.add_argument("--to", help="Folder data untuk hasil")
 parser.add_argument(
     "--split", help="Split ke train dan test dalam persen", default=30)
 parser.add_argument("--log", help="Simpan dimana lognya",
-                    default='./log_datapreparation')
+                    default='info.log')
 args = parser.parse_args()
 
 paths = args.src
 to = args.to + '/'
+log = args.log
 split = int(args.split)
 os.makedirs(to, exist_ok=True)
 
@@ -37,7 +38,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler(to+"info.log"),
+        logging.FileHandler(to+log),
         logging.StreamHandler()
     ]
 )
@@ -52,6 +53,8 @@ for path in paths:
 files_filtered = []
 for file in files:
     if os.path.exists(file.replace('wav', 'txt')):
+        files_filtered.append(file)
+    elif os.path.exists(file.replace('wav', 'lab')):
         files_filtered.append(file)
     else:
         logging.info("%s tidak memiliki txt file, dihapus", file)
