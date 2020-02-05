@@ -67,7 +67,10 @@ def getname(filename):
 
 
 def gettext(filename):
-    filename = filename.replace('wav', 'txt')
+    try:
+        filename = filename.replace('wav', 'txt')
+    except:
+        filename = filename.replace('wav', 'lab')
     with open(filename, 'r') as f:
         txt = f.readline()
     txt = re.sub(r'(\[\w+\]|<\w+>)', '', txt)
