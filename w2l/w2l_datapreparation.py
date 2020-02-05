@@ -38,7 +38,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler(to+log),
+        logging.FileHandler(to+log, mode='w'),
         logging.StreamHandler()
     ]
 )
@@ -57,7 +57,7 @@ for file in files:
     elif os.path.exists(file.replace('wav', 'lab')):
         files_filtered.append(file)
     else:
-        logging.info("%s tidak memiliki txt file, dihapus", file)
+        logging.warn("%s tidak memiliki transkrip file, dihapus", file)
 
 # In[70]:
 
