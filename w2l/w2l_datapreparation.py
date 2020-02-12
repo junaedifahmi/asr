@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser(description="Dataset Creation for w2l")
 parser.add_argument("--src", help="Folder data akustik dan text", nargs='+')
 parser.add_argument("--to", help="Folder data untuk hasil")
 parser.add_argument(
-    "--split", help="Split ke train dan test dalam persen", default=30)
+    "--split", help="Split ke train dan test dalam persen", default=10)
 parser.add_argument("--log", help="Simpan dimana lognya",
                     default='info.log')
 args = parser.parse_args()
