@@ -5,17 +5,27 @@
 
 
 # Arguments declaration
+import logging
 import argparse
 import os
 
 parser = argparse.ArgumentParser(description="Cleaning ")
 parser.add_argument("--src", help="The lexicon file")
 parser.add_argument("--add", help="Additional file(s)", nargs="+")
-
+parser.add_argument("--logdir", help="Logging file", default=".")
 args = parser.parse_args()
 flexicon = args.src
 fbaru = args.add
+log = args.log
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler(log+"addlexicon.log", mode='w'),
+        logging.StreamHandler()
+    ]
+)
 
 # In[38]:
 
@@ -27,10 +37,17 @@ with open(flexicon, 'r+') as lex:
         lama = line.split()[0]
         lexicon.add(lama)
 
+leng = len(lexicon)
+
+logging.info(f"Diambil lexicon dari {flexicon}")
+logging.info(f"Ada {leng} buah lexicon")
+
+
 for file in fbaru:
     with open(file, 'r') as f:
         lexicon |= set(f.read().split())
-        
+    logging.info(f"Ditambahkan {len(lexicon)-leng} buah lexicon dari {file}")
+
 lexicon = sorted(lexicon)
 
 
@@ -63,10 +80,11 @@ def cacah(kata):
         except:
             pass
     x = [c for c in x if c != '#']
-
     return x
 
-with open(flexicon,'w') as f:
+
+with open(flexicon, 'w') as f:
     for lexi in lexicon:
         print(f"{lexi}\t{' '.join(cacah(lexi))+' |'}", file=f)
 
+logging.info(f"Total lexicon baru berjumlah {len(lexicon)}")
