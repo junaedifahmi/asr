@@ -16,7 +16,7 @@ parser.add_argument("--logdir", help="Logging file", default=".")
 args = parser.parse_args()
 flexicon = args.src
 fbaru = args.add
-log = args.log
+log = args.logdir
 
 logging.basicConfig(
     level=logging.INFO,
