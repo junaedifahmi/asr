@@ -1,9 +1,11 @@
 import argparse
 import re
 import subprocess
+import os
+from tqdm import tqdm
 
 # Argument definition
-parser = argparse.ArgumentParser(description="Language construction for wav2letter engine")
+parser = argparse.ArgumentParser(description="Language model construction for wav2letter engine")
 parser.add_argument("--textfiles",nargs='+', help="source text files")
 parser.add_argument("--kenlm", help="kenlm root directory")
 parser.add_argument("--order",default='4', help="Order of the lm")
@@ -14,10 +16,11 @@ args = parser.parse_args()
 # Preprocessing def
 
 def cleaner(sentence):
+    sentence = sentence.encode("ascii", errors="ignore").decode() # Remove non ascii char
     sentence = sentence.lower()
-    sentence = re.sub(r'[^\w\s]', '', sentence)   # remove punctuation 
-    sentence = re.sub(r'\r?\n|\r', '', sentence) # remove new line
-    sentence = re.sub(r'\d','',sentence)
+    sentence = re.sub(r'[^\w\s\_]', ' ', sentence)   # remove punctuation 
+    sentence = re.sub(r'\r?\n|\r', ' ', sentence) # remove new line
+    sentence = re.sub(r'\d',' ',sentence) # remove any number
     return sentence
 
 def cacah(kata):
@@ -25,7 +28,6 @@ def cacah(kata):
     for i in range(len(x)):
         try:
             y = x[i+1]
-
             if x[i] == 'n' and y == 'y':
                 x[i] = 'ny'
                 x[i+1] = '#'
@@ -51,44 +53,50 @@ def cacah(kata):
     
 
 out = args.out
-
+os.makedirs(out, exist_ok=True)
 # Get all text
 files = args.textfiles
 texts = []
 
-for file in files:
+
+print("Reading files")
+for file in tqdm(files):
     text = []
     with open(file, 'r') as f:
         # Cleaning text
-        text.append(f.readlines())
+        text.extend(f.readlines())
         for x in text:
             x = cleaner(x)
             texts.append(x)
 
-print(texts[0:6])
 
+print("Writing formated text")
 ftext = open(out+'/text', 'w')
-for text in texts:
+for text in tqdm(texts):
     ftext.writelines(text+' ')
 ftext.close()
 
+print("Getting lexicons")
 lexicons = set()
-for text in texts:
+for text in tqdm(texts):
     lexicons.update(text.split())
 
-flexicon = open(out+'/lexicon', 'w+')
+lexicons = sorted(lexicons)
+flexicon = open(out+'/lexicon.txt', 'w+')
 
-for lexicon in lexicons:
+print("Writing lexicons")
+for lexicon in tqdm(lexicons):
     flexicon.writelines(lexicon+"\t"+' '.join(cacah(lexicon))+" |\n")
 
 # Building lm
 kenlm = args.kenlm+'/build/bin/'
-command = kenlm+'/lmpz'
+command = kenlm+'/lmplz'
 command += ' -o ' + str(args.order)
+command += ' --discount_fallback=0.5 1 1.5'
 command += ' --prune 0 10'
-command += ' --discount_fallback=1 2 3 '
-command += ' < '+out+'/text'
-command += ' > '+out+'/lm.arpa'
+command += ' --text '+out+'/text'
+command += ' --arpa '+out+'/language_model.arpa'
+print(command)
 command = command.split()
 
 popen = subprocess.Popen(command, stdout=subprocess.PIPE)
@@ -97,8 +105,10 @@ popen.wait()
 print("Arpa file was made at", out)
 
 command = kenlm+'/build_binary' 
-command += ' '+out+'/lm.arpa'
-command += ' '+out+'/lm.bin'
+command += ' -s'
+command += ' '+out+'/language_model.arpa'
+command += ' '+out+'/language_model.bin'
+print(command)
 command = command.split()
 popen = subprocess.Popen(command, stdout=subprocess.PIPE)
 popen.wait()
