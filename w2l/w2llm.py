@@ -19,6 +19,8 @@ def cleaner(sentence):
     sentence = sentence.encode("ascii", errors="ignore").decode() # Remove non ascii char
     sentence = sentence.lower()
     sentence = re.sub(r'[^\w\s\_]', ' ', sentence)   # remove punctuation 
+    sentence = re.sub(r'_+', '', sentence) # remove underscore
+    sentence = re.sub(r'[aiueohm]{3,}', '', sentence)
     sentence = re.sub(r'\r?\n|\r', ' ', sentence) # remove new line
     sentence = re.sub(r'\d',' ',sentence) # remove any number
     return sentence
@@ -94,6 +96,31 @@ command = kenlm+'/lmplz'
 command += ' -o ' + str(args.order)
 command += ' --discount_fallback=0.5 1 1.5'
 command += ' --prune 0 10'
+command += ' --text '+out+'/text'
+command += ' --arpa '+out+'/language_model_pruned.arpa'
+print(command)
+command = command.split()
+
+popen = subprocess.Popen(command, stdout=subprocess.PIPE)
+popen.wait()
+
+print("Arpa file was made at", out)
+
+command = kenlm+'/build_binary' 
+command += ' -s'
+command += ' '+out+'/language_model_pruned.arpa'
+command += ' '+out+'/language_model_pruned.bin'
+print(command)
+command = command.split()
+popen = subprocess.Popen(command, stdout=subprocess.PIPE)
+popen.wait()
+print("Binary was made at", out)
+
+# Building lm
+kenlm = args.kenlm+'/build/bin/'
+command = kenlm+'/lmplz'
+command += ' -o ' + str(args.order)
+command += ' --discount_fallback=0.5 1 1.5'
 command += ' --text '+out+'/text'
 command += ' --arpa '+out+'/language_model.arpa'
 print(command)
