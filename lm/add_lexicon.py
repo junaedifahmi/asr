@@ -52,8 +52,6 @@ lexicon = sorted(lexicon)
 
 
 # In[40]:
-
-
 def cacah(kata):
     x = [c for c in kata]
     for i in range(len(x)):
