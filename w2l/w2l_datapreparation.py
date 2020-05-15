@@ -27,6 +27,10 @@ parser.add_argument("--log", help="Simpan dimana lognya",
                     default='info.log')
 args = parser.parse_args()
 
+if len(sys.argv) < 3 :
+    parser.print_help()
+    exit()
+
 paths = args.src
 to = args.to + '/'
 log = args.log
@@ -74,8 +78,9 @@ def gettext(filename):
 
     with open(filename, 'r') as f:
         txt = f.readline()
-    txt = re.sub(r'(\[\w+\]|<\w+>)', '', txt)
-    txt = re.sub(r'-', '|', txt)
+    txt = re.sub(r'(\[\w+\]?|<\w+>?)', '', txt) # Remove tag
+    txt = re.sub(r'-', '|', txt) # Remove 
+    txt = re.sub(r'[^\w\s]',' ', txt)
     return txt.replace('\n', '')
 
 
@@ -139,13 +144,13 @@ if int(split) > 0:
     test = random.sample(files_filtered, k)
     train = [f for f in files_filtered if f not in test]
     totaldur = []
-    writefile(to + '/lists/train', train)
+    writefile(to + '/lists/train.lst', train)
     logging.info("Total data latih %.2f jam", sum(totaldur)/1000/60/60)
     totaldur = []
-    writefile(to + '/lists/test', test)
+    writefile(to + '/lists/test.lst', test)
     logging.info("Total data uji %.2f jam", sum(totaldur)/1000/60/60)
 else:
-    writefile(to + '/lists/train', files)
+    writefile(to + '/lists/train.lst', files)
     logging.info("Total data latih %.2f jam", sum(totaldur)/1000/60/60)
 
 logging.info("Telah dibuat file list di %s", to+'/lists/')
@@ -169,13 +174,13 @@ tokens = set()
 
 
 # Write Lexicon file "<word> <spelling>" format
-with open((to+"/txt/lexicon"), 'w') as f:
+with open((to+"/txt/lexicon.txt"), 'w') as f:
     for l in lexicon:
         ch = cacah(l)
         tokens |= set(ch)
         f.writelines(l+"\t"+' '.join(ch)+" |\n")
 
-logging.info("Telah dibuat file lexicon di %s", to + "/txt/lexicon")
+logging.info("Telah dibuat file lexicon di %s", to + "/txt/lexicon.txt")
 logging.info("Terdapat %d lexicon unik", len(lexicon))
 try:
     tokens.remove(' ')
@@ -183,12 +188,13 @@ except:
     pass
 
 # Write tokens list
-with open((to+"/txt/tokens"), 'w') as f:
+with open((to+"/txt/tokens.txt"), 'w') as f:
     tokens.add("|")
     tokens = sorted(tokens)
     for c in tokens:
         f.writelines(c+"\n")
-logging.info("Token dibuat di %s", to+"/txt/tokens")
+logging.info("Token dibuat di %s", to+"/txt/tokens.txt")
 
 elapsed_time = time.time() - start_time
 logging.info("Proses selesai dengan waktu %.2f menit", elapsed_time/60)
+print("DONEEEEE")

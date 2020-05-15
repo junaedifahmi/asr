@@ -41,10 +41,10 @@ funlabel = open(args.outdir+"/unlabeled.lst", 'w')
 for i in range(0, minlen):
     flabel.writelines(labeled[i])
     unlabel = unlabeled[i].split('\t')
-    print(unlabel)
-    unlabel = unlabeled[0:-1]
-    unlabel.append("|")
     # print(unlabel)
+    unlabel = unlabel[0:-1]
+    unlabel.append("<unk>")
+    print(unlabel)
     unlabel = '\t'.join(unlabel)
     funlabel.writelines(unlabel)
 
