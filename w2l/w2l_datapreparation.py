@@ -80,9 +80,9 @@ def gettext(filename):
         txt = f.readline()
     txt = txt.lower()
     txt = re.sub(r'\d+','',txt)
-    txt = re.sub(r'(\[\w+\]?|<\w+>?)', '', txt) # Remove tag
-    txt = re.sub(r'-', '|', txt) # Remove dashline 
-    txt = txt.translate(string.maketrans('','',string.punctuation))    # Remove punctuation
+    txt = re.sub(r'(\[\w+\]?|<\w+>?)', '', txt) # Remove tag (silphone)
+    txt = re.sub(r'-', '|', txt) # Remove dashline (keep the repetitif words)
+    txt = txt.translate(str.maketrans('','',string.punctuation))    # Remove punctuation
     return txt.replace('\n', '')
 
 
