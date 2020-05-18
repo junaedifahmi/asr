@@ -15,6 +15,7 @@ import argparse
 import time
 import re
 import string
+from tqdm import tqdm
 
 start_time = time.time()
 
@@ -95,7 +96,7 @@ totaldur = []
 
 def writefile(filename, datas):
     with open(filename, 'w') as f:
-        for data in datas:
+        for data in tqdm(datas):
             f.write(getname(data))
             f.write("\t")
             f.write(getabs(data))
