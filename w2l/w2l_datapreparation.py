@@ -14,7 +14,7 @@ import logging
 import argparse
 import time
 import re
-
+import string
 
 start_time = time.time()
 
@@ -78,9 +78,11 @@ def gettext(filename):
 
     with open(filename, 'r') as f:
         txt = f.readline()
+    txt = txt.lower()
+    txt = re.sub(r'\d+','',txt)
     txt = re.sub(r'(\[\w+\]?|<\w+>?)', '', txt) # Remove tag
-    txt = re.sub(r'-', '|', txt) # Remove 
-    txt = re.sub(r'[^\w\s]',' ', txt)
+    txt = re.sub(r'-', '|', txt) # Remove dashline 
+    txt = txt.translate(string.maketrans('','',string.punctuation))    # Remove punctuation
     return txt.replace('\n', '')
 
 
