@@ -80,14 +80,14 @@ for file in tqdm(files):
     text = []
     with open(file, 'r') as f:
         # Cleaning text
-        text.extend(f.readlines())
+        text.extend(f.readline())
         for x in text:
             x = cleaner(x)
             texts.append(x)
 
 
 print("Writing formated text")
-ftext = open(out+'/text', 'w')
+ftext = open(out+'/text.txt', 'w')
 for text in tqdm(texts):
     ftext.writelines(text+' ')
 ftext.close()
