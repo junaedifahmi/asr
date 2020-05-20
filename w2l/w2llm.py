@@ -30,7 +30,7 @@ if len(sys.argv) < 2 :
 #     sentence = re.sub(r'\d',' ',sentence) # remove any number
 #     return sentence
 
-def cleaner(sentence):
+def cleaner(txt):
     txt = txt.lower()
     txt = re.sub(r'\d+','',txt)
     txt = re.sub(r'(\[\w+\]?|<\w+>?)', '', txt) # Remove tag (silphone)
