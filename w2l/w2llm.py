@@ -80,7 +80,7 @@ for file in tqdm(files):
     text = []
     with open(file, 'r') as f:
         # Cleaning text
-        text.extend(f.readline())
+        text.extend(f.readlines())
         for x in text:
             x = cleaner(x)
             texts.append(x)
