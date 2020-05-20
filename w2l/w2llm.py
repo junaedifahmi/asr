@@ -2,6 +2,7 @@ import argparse
 import re
 import subprocess
 import os
+import sys
 from tqdm import tqdm
 
 # Argument definition
@@ -12,6 +13,10 @@ parser.add_argument("--order",default='4', help="Order of the lm")
 parser.add_argument("--out", help="output directori", default="./lm")
 
 args = parser.parse_args()
+
+if len(sys.argv) < 2 :
+    parser.print_help()
+    exit()
 
 # Preprocessing def
 

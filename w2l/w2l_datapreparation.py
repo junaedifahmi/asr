@@ -20,7 +20,7 @@ from tqdm import tqdm
 start_time = time.time()
 
 parser = argparse.ArgumentParser(description="Dataset Creation for w2l")
-parser.add_argument("--src", help="Folder data akustik dan text", nargs='+')
+parser.add_argument("--src", help="Folder data akustik dan transkrip", nargs='+')
 parser.add_argument("--to", help="Folder data untuk hasil")
 parser.add_argument(
     "--split", help="Split ke train dan test dalam persen", default=10)
