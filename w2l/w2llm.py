@@ -20,15 +20,23 @@ if len(sys.argv) < 2 :
 
 # Preprocessing def
 
+# def cleaner(sentence):
+#     # sentence = sentence.encode("ascii", errors="ignore").decode() # Remove non ascii char
+#     sentence = sentence.lower()
+#     sentence = re.sub(r'[^\w\s\_]', ' ', sentence)   # remove punctuation 
+#     sentence = re.sub(r'_+', '', sentence) # remove underscore
+#     sentence = re.sub(r'[aiueohm]{3,}', '', sentence)
+#     sentence = re.sub(r'\r?\n|\r', ' ', sentence) # remove new line
+#     sentence = re.sub(r'\d',' ',sentence) # remove any number
+#     return sentence
+
 def cleaner(sentence):
-    sentence = sentence.encode("ascii", errors="ignore").decode() # Remove non ascii char
-    sentence = sentence.lower()
-    sentence = re.sub(r'[^\w\s\_]', ' ', sentence)   # remove punctuation 
-    sentence = re.sub(r'_+', '', sentence) # remove underscore
-    sentence = re.sub(r'[aiueohm]{3,}', '', sentence)
-    sentence = re.sub(r'\r?\n|\r', ' ', sentence) # remove new line
-    sentence = re.sub(r'\d',' ',sentence) # remove any number
-    return sentence
+    txt = txt.lower()
+    txt = re.sub(r'\d+','',txt)
+    txt = re.sub(r'(\[\w+\]?|<\w+>?)', '', txt) # Remove tag (silphone)
+    txt = re.sub(r'-', '|', txt) # Remove dashline (keep the repetitif words)
+    txt = txt.translate(str.maketrans('','',string.punctuation))    # Remove punctuation
+    return txt.replace('\n', '')
 
 def cacah(kata):
     x = [c for c in kata]
