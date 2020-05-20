@@ -110,7 +110,7 @@ command = kenlm+'/lmplz'
 command += ' -o ' + str(args.order)
 command += ' --discount_fallback=0.5 1 1.5'
 command += ' --prune 0 10'
-command += ' --text '+out+'/text'
+command += ' --text '+out+'/text.txt'
 command += ' --arpa '+out+'/language_model_pruned.arpa'
 print(command)
 command = command.split()
@@ -135,7 +135,7 @@ kenlm = args.kenlm+'/build/bin/'
 command = kenlm+'/lmplz'
 command += ' -o ' + str(args.order)
 command += ' --discount_fallback=0.5 1 1.5'
-command += ' --text '+out+'/text'
+command += ' --text '+out+'/text.txt'
 command += ' --arpa '+out+'/language_model.arpa'
 print(command)
 command = command.split()
