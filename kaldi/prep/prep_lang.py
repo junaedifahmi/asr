@@ -6,11 +6,15 @@
 
 import glob
 import sys
+import os
 text = []
 
 
 to = sys.argv[2]+'/'
+os.makedirs(to+"/lm", exist_ok=True)
 txtfile = open(to+"./lm/alltext",'w')
+
+
 
 
 all_dir = glob.glob(sys.argv[1]+"/**/*.txt", recursive=True)
@@ -76,6 +80,8 @@ def lexiconize(kata):
 
 import re
 ex = r"(<|\[)\w*(>|\])"
+
+os.makedirs(to+"/dict", exist_ok=True)
 
 silence_phone = open(to+'./dict/silence_phones.txt','w')
 lexicon = open(to+'./dict/lexicon.txt', 'w')
